@@ -63,6 +63,9 @@ def get_and_validate_user(*, username: str, password: str) -> bool:
     exception is raised.
     """
 
+    if not settings.PASSWORD_LOGIN_ENABLED:
+        raise exc.BadRequest(_("Password login is disabled."))
+
     user = get_user_by_username_or_email(username)
     if not user.check_password(password):
         raise exc.WrongArguments(_("Username or password does not matches user."))
